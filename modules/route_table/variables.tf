@@ -1,23 +1,35 @@
-data "terraform_remote_state" "route_table" {
-  backend = "local"
-
-  config = {
-    path = "../../../generated/aws/route_table/terraform.tfstate"
-  }
+variable "vpc_id" {
+  default = ""
 }
 
-data "terraform_remote_state" "subnet" {
-  backend = "local"
-
-  config = {
-    path = "../../../generated/aws/subnet/terraform.tfstate"
-  }
+variable "vpc_peering" {
+  default = ""
 }
 
-data "terraform_remote_state" "vpc" {
-  backend = "local"
+variable "ngw_1" {
+  default = ""
+}
 
-  config = {
-    path = "../../../generated/aws/vpc/terraform.tfstate"
-  }
+variable "ngw_2" {
+  default = ""
+}
+
+variable "igw_id" {
+  default = ""
+}
+
+variable "pub_sub_1_id" {
+  default = ""
+}
+
+variable "pub_sub_2_id" {
+  default = ""
+}
+
+variable "priv_sub_1_id" {
+  default = ""
+}
+
+variable "priv_sub_2_id" {
+  default = ""
 }

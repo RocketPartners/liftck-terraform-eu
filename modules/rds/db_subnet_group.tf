@@ -15,3 +15,4 @@ resource "aws_db_subnet_group" "tfer--default-vpc-072a71590b8c6a80c" {
   name        = "default-vpc-072a71590b8c6a80c"
   subnet_ids  = ["${data.terraform_remote_state.subnet.outputs.aws_subnet_tfer--subnet-017cb385e5acdbec2_id}", "${data.terraform_remote_state.subnet.outputs.aws_subnet_tfer--subnet-07d6918830b6abd48_id}", "${data.terraform_remote_state.subnet.outputs.aws_subnet_tfer--subnet-0b79e29e16fd8d71c_id}", "${data.terraform_remote_state.subnet.outputs.aws_subnet_tfer--subnet-0f592478c6198fa9e_id}"]
 }
+
