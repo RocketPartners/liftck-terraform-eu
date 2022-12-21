@@ -34,3 +34,15 @@ variable "sg-alb-portal" {
 variable "sg-alb-ecs" {
   default = ""
 }
+
+variable "elb_eni_1" {
+  default = ""
+}
+
+variable "elb_eni_2" {
+  default = ""
+}
+
+variable "region" {
+  default = ""
+}

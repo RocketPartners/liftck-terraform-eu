@@ -14,7 +14,7 @@ resource "aws_eip" "tfer--eipalloc-01ec88f75cdb767fa" {
   vpc = "true"
 }
 
-resource "aws_eip" "tfer--eipalloc-02966e43fa4f9e822" {
+/*resource "aws_eip" "tfer--eipalloc-02966e43fa4f9e822" {
   network_border_group = var.region
   network_interface    = var.elb_eni_1 #eni-02bc05185e770a3db
   public_ipv4_pool     = "amazon"
@@ -28,7 +28,7 @@ resource "aws_eip" "tfer--eipalloc-02966e43fa4f9e822" {
   }
 
   vpc = "true"
-}
+}*/
 
 resource "aws_eip" "tfer--eipalloc-03ed668dfe3da3db5" {
   network_border_group = var.region
@@ -48,7 +48,7 @@ resource "aws_eip" "tfer--eipalloc-03ed668dfe3da3db5" {
   depends_on = []
 }
 
-resource "aws_eip" "tfer--eipalloc-045ef3f84510fb62f" {
+/*resource "aws_eip" "tfer--eipalloc-045ef3f84510fb62f" {
   network_border_group = var.region
   network_interface    = var.elb_eni_2 #eni-024806e1d471b89ae
   public_ipv4_pool     = "amazon"
@@ -62,7 +62,7 @@ resource "aws_eip" "tfer--eipalloc-045ef3f84510fb62f" {
   }
 
   vpc = "true"
-}
+}*/
 
 resource "aws_eip" "tfer--eipalloc-0ec3904e2060e6073" {
   network_border_group = var.region
