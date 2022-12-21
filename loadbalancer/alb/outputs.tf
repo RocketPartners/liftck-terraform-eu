@@ -1,4 +1,4 @@
-output "aws_lb_listener_rule_tfer--arn-003A-aws-003A-elasticloadbalancing-003A-us-east-1-003A-799611636099-003A-listener-rule-002F-app-002F-player-002F-64deb6688dcdede5-002F-1f54e68e8b044ee4-002F-117d741ef04415e7_id" {
+/*output "aws_lb_listener_rule_tfer--arn-003A-aws-003A-elasticloadbalancing-003A-us-east-1-003A-799611636099-003A-listener-rule-002F-app-002F-player-002F-64deb6688dcdede5-002F-1f54e68e8b044ee4-002F-117d741ef04415e7_id" {
   value = "${aws_lb_listener_rule.tfer--arn-003A-aws-003A-elasticloadbalancing-003A-us-east-1-003A-799611636099-003A-listener-rule-002F-app-002F-player-002F-64deb6688dcdede5-002F-1f54e68e8b044ee4-002F-117d741ef04415e7.id}"
 }
 
@@ -212,7 +212,7 @@ output "aws_lb_target_group_tfer--portal-api_id" {
 
 output "aws_lb_target_group_tfer--reports-tg_id" {
   value = "${aws_lb_target_group.tfer--reports-tg.id}"
-}
+} */
 
 output "aws_lb_tfer--nlb_id" {
   value = "${aws_lb.tfer--nlb.id}"

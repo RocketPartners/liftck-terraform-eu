@@ -8,6 +8,7 @@ resource "aws_subnet" "tfer--subnet-017cb385e5acdbec2" {
   #map_customer_owned_ip_on_launch                = "false"
   map_public_ip_on_launch                        = "false"
   private_dns_hostname_type_on_launch            = "ip-name"
+  availability_zone                              = "eu-west-1b"
 
   tags = {
     Name = "cirk Private Subnet (AZ2)"
@@ -30,7 +31,7 @@ resource "aws_subnet" "tfer--subnet-07d6918830b6abd48" {
   #map_customer_owned_ip_on_launch                = "false"
   map_public_ip_on_launch                        = "true"
   private_dns_hostname_type_on_launch            = "ip-name"
-
+  availability_zone                              = "eu-west-1a"
   tags = {
     Name = "cirk Public Subnet (AZ1)"
   }
@@ -52,7 +53,7 @@ resource "aws_subnet" "tfer--subnet-0b79e29e16fd8d71c" {
   #map_customer_owned_ip_on_launch                = "false"
   map_public_ip_on_launch                        = "true"
   private_dns_hostname_type_on_launch            = "ip-name"
-
+  availability_zone                              = "eu-west-1b"
   tags = {
     Name = "cirk Public Subnet (AZ2)"
   }
@@ -73,7 +74,7 @@ resource "aws_subnet" "tfer--subnet-0f592478c6198fa9e" {
   #map_customer_owned_ip_on_launch                = "false"
   map_public_ip_on_launch                        = "false"
   private_dns_hostname_type_on_launch            = "ip-name"
-
+  availability_zone                              = "eu-west-1a"
   tags = {
     Name = "cirk Private Subnet (AZ1)"
   }
