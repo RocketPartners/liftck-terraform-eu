@@ -95,13 +95,17 @@ module "nacl" {
   vpc_id        = module.vpc.aws_vpc_tfer--vpc-072a71590b8c6a80c_id
 }
 
+module "acm" {
+  source = "./loadbalancer/acm/"
+}
+
 module "alb" {
   source = "./loadbalancer/alb/"
   region = "eu-west-1"
   #elb_eni_1         = module.eni.aws_network_interface_tfer--eni-02bc05185e770a3db_id
   #elb_eni_2         = module.eni.aws_network_interface_tfer--eni-024806e1d471b89ae_id
-  #nlb1          = module.eip.aws_eip_tfer--eipalloc-02966e43fa4f9e822_id
-  #nlb2          = module.eip.aws_eip_tfer--eipalloc-045ef3f84510fb62f_id
+  eip_nlb_1          = module.eip.aws_eip_tfer--eipalloc-02966e43fa4f9e822_id
+  eip_nlb_2          = module.eip.aws_eip_tfer--eipalloc-045ef3f84510fb62f_id
   pub_sub_1_id  = module.subnet.aws_subnet_tfer--subnet-07d6918830b6abd48_id
   pub_sub_2_id  = module.subnet.aws_subnet_tfer--subnet-0b79e29e16fd8d71c_id
   priv_sub_1_id = module.subnet.aws_subnet_tfer--subnet-0f592478c6198fa9e_id
@@ -109,5 +113,7 @@ module "alb" {
   sg-alb-player = module.sg.aws_security_group_tfer--alb-player_sg-075ee2d0c09048822_id
   sg-alb-portal = module.sg.aws_security_group_tfer--alb-portal_sg-06d59a5e786ab73fd_id
   sg-alb-ecs    = module.sg.aws_security_group_tfer--reports-group_sg-00af07a43287c65ba_id
-  #depends_on = [module.eip]
+  vpc_id = module.vpc.aws_vpc_tfer--vpc-072a71590b8c6a80c_id
+  circleklift_com_arn = module.acm.aws_acm_certificate_validation_arn
+  depends_on = [module.eip]
 }

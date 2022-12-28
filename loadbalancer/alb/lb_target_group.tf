@@ -1,34 +1,50 @@
-resource "aws_lb_target_group" "tfer--PlayerPushRabbitMQ5" {
-  connection_termination = "false"
-  deregistration_delay   = "300"
+/*
+
+
+
+
+
+
+
+
+
+
+
+
+
+*/
+
+resource "aws_lb_target_group" "tfer--reports-tg" {
+  deregistration_delay = "300"
 
   health_check {
     enabled             = "true"
-    healthy_threshold   = "3"
-    interval            = "30"
-    matcher             = "200-399"
-    path                = "/"
-    port                = "443"
-    protocol            = "HTTPS"
-    timeout             = "10"
-    unhealthy_threshold = "3"
+    healthy_threshold   = "2"
+    interval            = "10"
+    matcher             = "200-299"
+    path                = "/reports/"
+    port                = "traffic-port"
+    protocol            = "HTTP"
+    timeout             = "5"
+    unhealthy_threshold = "2"
   }
 
-  ip_address_type    = "ipv4"
-  name               = "PlayerPushRabbitMQ5"
-  port               = "5671"
-  preserve_client_ip = "false"
-  protocol           = "TLS"
-  proxy_protocol_v2  = "false"
+  ip_address_type               = "ipv4"
+  load_balancing_algorithm_type = "round_robin"
+  name                          = "reports-tg"
+  port                          = "80"
+  protocol                      = "HTTP"
+  protocol_version              = "HTTP1"
+  slow_start                    = "0"
 
   stickiness {
-    cookie_duration = "0"
+    cookie_duration = "86400"
     enabled         = "false"
-    type            = "source_ip"
+    type            = "lb_cookie"
   }
 
   target_type = "ip"
-  vpc_id      = "vpc-072a71590b8c6a80c"
+  vpc_id      = var.vpc_id
 }
 
 resource "aws_lb_target_group" "tfer--player-alb-443" {
@@ -41,7 +57,7 @@ resource "aws_lb_target_group" "tfer--player-alb-443" {
     interval            = "30"
     port                = "traffic-port"
     protocol            = "TCP"
-    timeout             = "10"
+    #timeout             = "10"
     unhealthy_threshold = "3"
   }
 
@@ -59,7 +75,7 @@ resource "aws_lb_target_group" "tfer--player-alb-443" {
   }
 
   target_type = "ip"
-  vpc_id      = "vpc-072a71590b8c6a80c"
+  vpc_id      = var.vpc_id
 }
 
 resource "aws_lb_target_group" "tfer--player-alb-80" {
@@ -72,7 +88,7 @@ resource "aws_lb_target_group" "tfer--player-alb-80" {
     interval            = "30"
     port                = "traffic-port"
     protocol            = "TCP"
-    timeout             = "10"
+    #timeout             = "10"
     unhealthy_threshold = "3"
   }
 
@@ -90,7 +106,40 @@ resource "aws_lb_target_group" "tfer--player-alb-80" {
   }
 
   target_type = "ip"
-  vpc_id      = "vpc-072a71590b8c6a80c"
+  vpc_id      = var.vpc_id
+}
+
+resource "aws_lb_target_group" "tfer--player-push-rabbitmq3" {
+  connection_termination = "false"
+  deregistration_delay   = "300"
+
+  health_check {
+    enabled             = "true"
+    healthy_threshold   = "3"
+    interval            = "30"
+    matcher             = "200-399"
+    path                = "/"
+    port                = "443"
+    protocol            = "HTTPS"
+    timeout             = "10"
+    unhealthy_threshold = "3"
+  }
+
+  ip_address_type    = "ipv4"
+  name               = "player-push-rabbitmq3"
+  port               = "5671"
+  preserve_client_ip = "false"
+  protocol           = "TLS"
+  proxy_protocol_v2  = "false"
+
+  stickiness {
+    cookie_duration = "0"
+    enabled         = "false"
+    type            = "source_ip"
+  }
+
+  target_type = "ip"
+  vpc_id      = var.vpc_id
 }
 
 resource "aws_lb_target_group" "tfer--player-api" {
@@ -131,7 +180,49 @@ resource "aws_lb_target_group" "tfer--player-api" {
   }
 
   target_type = "ip"
-  vpc_id      = "vpc-072a71590b8c6a80c"
+  vpc_id      = var.vpc_id
+}
+
+
+resource "aws_lb_target_group" "tfer--player-loyalty" {
+  deregistration_delay = "300"
+
+  health_check {
+    enabled             = "true"
+    healthy_threshold   = "2"
+    interval            = "10"
+    matcher             = "200-299"
+    path                = "/loyalty/health"
+    port                = "traffic-port"
+    protocol            = "HTTP"
+    timeout             = "5"
+    unhealthy_threshold = "2"
+  }
+
+  ip_address_type               = "ipv4"
+  load_balancing_algorithm_type = "round_robin"
+  name                          = "player-loyalty"
+  port                          = "80"
+  protocol                      = "HTTP"
+  protocol_version              = "HTTP1"
+  slow_start                    = "0"
+
+  stickiness {
+    cookie_duration = "86400"
+    enabled         = "false"
+    type            = "lb_cookie"
+  }
+
+  tags = {
+    Name = "player-loyalty"
+  }
+
+  tags_all = {
+    Name = "player-loyalty"
+  }
+
+  target_type = "ip"
+  vpc_id      = var.vpc_id
 }
 
 resource "aws_lb_target_group" "tfer--player-event-api" {
@@ -172,319 +263,7 @@ resource "aws_lb_target_group" "tfer--player-event-api" {
   }
 
   target_type = "ip"
-  vpc_id      = "vpc-072a71590b8c6a80c"
-}
-
-resource "aws_lb_target_group" "tfer--player-file-api" {
-  deregistration_delay = "300"
-
-  health_check {
-    enabled             = "true"
-    healthy_threshold   = "2"
-    interval            = "50"
-    matcher             = "200-299"
-    path                = "/api/lift/snooze/health"
-    port                = "traffic-port"
-    protocol            = "HTTP"
-    timeout             = "20"
-    unhealthy_threshold = "3"
-  }
-
-  ip_address_type               = "ipv4"
-  load_balancing_algorithm_type = "round_robin"
-  name                          = "player-file-api"
-  port                          = "80"
-  protocol                      = "HTTP"
-  protocol_version              = "HTTP1"
-  slow_start                    = "0"
-
-  stickiness {
-    cookie_duration = "86400"
-    enabled         = "false"
-    type            = "lb_cookie"
-  }
-
-  tags = {
-    Name = "player-file-api"
-  }
-
-  tags_all = {
-    Name = "player-file-api"
-  }
-
-  target_type = "ip"
-  vpc_id      = "vpc-072a71590b8c6a80c"
-}
-
-resource "aws_lb_target_group" "tfer--player-lift-okta-integration" {
-  deregistration_delay = "300"
-
-  health_check {
-    enabled             = "true"
-    healthy_threshold   = "2"
-    interval            = "60"
-    matcher             = "200-299"
-    path                = "/api/okta/actuator/health"
-    port                = "traffic-port"
-    protocol            = "HTTP"
-    timeout             = "5"
-    unhealthy_threshold = "2"
-  }
-
-  ip_address_type               = "ipv4"
-  load_balancing_algorithm_type = "round_robin"
-  name                          = "player-lift-okta-integration"
-  port                          = "80"
-  protocol                      = "HTTP"
-  protocol_version              = "HTTP1"
-  slow_start                    = "0"
-
-  stickiness {
-    cookie_duration = "86400"
-    enabled         = "false"
-    type            = "lb_cookie"
-  }
-
-  tags = {
-    Name = "player-lift-okta-integration"
-  }
-
-  tags_all = {
-    Name = "player-lift-okta-integration"
-  }
-
-  target_type = "ip"
-  vpc_id      = "vpc-072a71590b8c6a80c"
-}
-
-resource "aws_lb_target_group" "tfer--player-loyalty" {
-  deregistration_delay = "300"
-
-  health_check {
-    enabled             = "true"
-    healthy_threshold   = "2"
-    interval            = "10"
-    matcher             = "200-299"
-    path                = "/loyalty/health"
-    port                = "traffic-port"
-    protocol            = "HTTP"
-    timeout             = "5"
-    unhealthy_threshold = "2"
-  }
-
-  ip_address_type               = "ipv4"
-  load_balancing_algorithm_type = "round_robin"
-  name                          = "player-loyalty"
-  port                          = "80"
-  protocol                      = "HTTP"
-  protocol_version              = "HTTP1"
-  slow_start                    = "0"
-
-  stickiness {
-    cookie_duration = "86400"
-    enabled         = "false"
-    type            = "lb_cookie"
-  }
-
-  tags = {
-    Name = "player-loyalty"
-  }
-
-  tags_all = {
-    Name = "player-loyalty"
-  }
-
-  target_type = "ip"
-  vpc_id      = "vpc-072a71590b8c6a80c"
-}
-
-resource "aws_lb_target_group" "tfer--player-ngrp-proxy" {
-  deregistration_delay = "300"
-
-  health_check {
-    enabled             = "true"
-    healthy_threshold   = "2"
-    interval            = "10"
-    matcher             = "200-299"
-    path                = "/api/lift/snooze/health"
-    port                = "traffic-port"
-    protocol            = "HTTP"
-    timeout             = "5"
-    unhealthy_threshold = "2"
-  }
-
-  ip_address_type               = "ipv4"
-  load_balancing_algorithm_type = "round_robin"
-  name                          = "player-ngrp-proxy"
-  port                          = "80"
-  protocol                      = "HTTP"
-  protocol_version              = "HTTP1"
-  slow_start                    = "0"
-
-  stickiness {
-    cookie_duration = "86400"
-    enabled         = "false"
-    type            = "lb_cookie"
-  }
-
-  tags = {
-    Name = "player-ngrp-proxy"
-  }
-
-  tags_all = {
-    Name = "player-ngrp-proxy"
-  }
-
-  target_type = "ip"
-  vpc_id      = "vpc-072a71590b8c6a80c"
-}
-
-resource "aws_lb_target_group" "tfer--player-punchcard" {
-  deregistration_delay = "300"
-
-  health_check {
-    enabled             = "true"
-    healthy_threshold   = "2"
-    interval            = "10"
-    matcher             = "200-299"
-    path                = "/api/lift/snooze/health"
-    port                = "traffic-port"
-    protocol            = "HTTP"
-    timeout             = "5"
-    unhealthy_threshold = "2"
-  }
-
-  ip_address_type               = "ipv4"
-  load_balancing_algorithm_type = "round_robin"
-  name                          = "player-punchcard"
-  port                          = "80"
-  protocol                      = "HTTP"
-  protocol_version              = "HTTP1"
-  slow_start                    = "0"
-
-  stickiness {
-    cookie_duration = "86400"
-    enabled         = "false"
-    type            = "lb_cookie"
-  }
-
-  tags = {
-    Name = "player-punchcard"
-  }
-
-  tags_all = {
-    Name = "player-punchcard"
-  }
-
-  target_type = "ip"
-  vpc_id      = "vpc-072a71590b8c6a80c"
-}
-
-resource "aws_lb_target_group" "tfer--player-push-rabbitmq2" {
-  connection_termination = "false"
-  deregistration_delay   = "300"
-
-  health_check {
-    enabled             = "true"
-    healthy_threshold   = "3"
-    interval            = "30"
-    matcher             = "200-399"
-    path                = "/"
-    port                = "traffic-port"
-    protocol            = "HTTPS"
-    timeout             = "10"
-    unhealthy_threshold = "3"
-  }
-
-  ip_address_type    = "ipv4"
-  name               = "player-push-rabbitmq2"
-  port               = "5671"
-  preserve_client_ip = "false"
-  protocol           = "TLS"
-  proxy_protocol_v2  = "false"
-
-  stickiness {
-    cookie_duration = "0"
-    enabled         = "false"
-    type            = "source_ip"
-  }
-
-  target_type = "ip"
-  vpc_id      = "vpc-072a71590b8c6a80c"
-}
-
-resource "aws_lb_target_group" "tfer--player-push-rabbitmq3" {
-  connection_termination = "false"
-  deregistration_delay   = "300"
-
-  health_check {
-    enabled             = "true"
-    healthy_threshold   = "3"
-    interval            = "30"
-    matcher             = "200-399"
-    path                = "/"
-    port                = "443"
-    protocol            = "HTTPS"
-    timeout             = "10"
-    unhealthy_threshold = "3"
-  }
-
-  ip_address_type    = "ipv4"
-  name               = "player-push-rabbitmq3"
-  port               = "5671"
-  preserve_client_ip = "false"
-  protocol           = "TLS"
-  proxy_protocol_v2  = "false"
-
-  stickiness {
-    cookie_duration = "0"
-    enabled         = "false"
-    type            = "source_ip"
-  }
-
-  target_type = "ip"
-  vpc_id      = "vpc-072a71590b8c6a80c"
-}
-
-resource "aws_lb_target_group" "tfer--player-token-tracker" {
-  deregistration_delay = "300"
-
-  health_check {
-    enabled             = "true"
-    healthy_threshold   = "2"
-    interval            = "10"
-    matcher             = "200-299"
-    path                = "/token-tracker/health"
-    port                = "traffic-port"
-    protocol            = "HTTP"
-    timeout             = "5"
-    unhealthy_threshold = "2"
-  }
-
-  ip_address_type               = "ipv4"
-  load_balancing_algorithm_type = "round_robin"
-  name                          = "player-token-tracker"
-  port                          = "80"
-  protocol                      = "HTTP"
-  protocol_version              = "HTTP1"
-  slow_start                    = "0"
-
-  stickiness {
-    cookie_duration = "86400"
-    enabled         = "false"
-    type            = "lb_cookie"
-  }
-
-  tags = {
-    Name = "player-token-tracker"
-  }
-
-  tags_all = {
-    Name = "player-token-tracker"
-  }
-
-  target_type = "ip"
-  vpc_id      = "vpc-072a71590b8c6a80c"
+  vpc_id      = var.vpc_id
 }
 
 resource "aws_lb_target_group" "tfer--portal-api" {
@@ -525,10 +304,11 @@ resource "aws_lb_target_group" "tfer--portal-api" {
   }
 
   target_type = "ip"
-  vpc_id      = "vpc-072a71590b8c6a80c"
+  vpc_id      = var.vpc_id
 }
 
-resource "aws_lb_target_group" "tfer--reports-tg" {
+
+resource "aws_lb_target_group" "tfer--player-punchcard" {
   deregistration_delay = "300"
 
   health_check {
@@ -536,7 +316,7 @@ resource "aws_lb_target_group" "tfer--reports-tg" {
     healthy_threshold   = "2"
     interval            = "10"
     matcher             = "200-299"
-    path                = "/reports/"
+    path                = "/api/lift/snooze/health"
     port                = "traffic-port"
     protocol            = "HTTP"
     timeout             = "5"
@@ -545,7 +325,7 @@ resource "aws_lb_target_group" "tfer--reports-tg" {
 
   ip_address_type               = "ipv4"
   load_balancing_algorithm_type = "round_robin"
-  name                          = "reports-tg"
+  name                          = "player-punchcard"
   port                          = "80"
   protocol                      = "HTTP"
   protocol_version              = "HTTP1"
@@ -557,6 +337,248 @@ resource "aws_lb_target_group" "tfer--reports-tg" {
     type            = "lb_cookie"
   }
 
+  tags = {
+    Name = "player-punchcard"
+  }
+
+  tags_all = {
+    Name = "player-punchcard"
+  }
+
   target_type = "ip"
-  vpc_id      = "vpc-072a71590b8c6a80c"
+  vpc_id      = var.vpc_id
+}
+
+
+resource "aws_lb_target_group" "tfer--player-lift-okta-integration" {
+  deregistration_delay = "300"
+
+  health_check {
+    enabled             = "true"
+    healthy_threshold   = "2"
+    interval            = "60"
+    matcher             = "200-299"
+    path                = "/api/okta/actuator/health"
+    port                = "traffic-port"
+    protocol            = "HTTP"
+    timeout             = "5"
+    unhealthy_threshold = "2"
+  }
+
+  ip_address_type               = "ipv4"
+  load_balancing_algorithm_type = "round_robin"
+  name                          = "player-lift-okta-integration"
+  port                          = "80"
+  protocol                      = "HTTP"
+  protocol_version              = "HTTP1"
+  slow_start                    = "0"
+
+  stickiness {
+    cookie_duration = "86400"
+    enabled         = "false"
+    type            = "lb_cookie"
+  }
+
+  tags = {
+    Name = "player-lift-okta-integration"
+  }
+
+  tags_all = {
+    Name = "player-lift-okta-integration"
+  }
+
+  target_type = "ip"
+  vpc_id      = var.vpc_id
+}
+
+
+resource "aws_lb_target_group" "tfer--player-token-tracker" {
+  deregistration_delay = "300"
+
+  health_check {
+    enabled             = "true"
+    healthy_threshold   = "2"
+    interval            = "10"
+    matcher             = "200-299"
+    path                = "/token-tracker/health"
+    port                = "traffic-port"
+    protocol            = "HTTP"
+    timeout             = "5"
+    unhealthy_threshold = "2"
+  }
+
+  ip_address_type               = "ipv4"
+  load_balancing_algorithm_type = "round_robin"
+  name                          = "player-token-tracker"
+  port                          = "80"
+  protocol                      = "HTTP"
+  protocol_version              = "HTTP1"
+  slow_start                    = "0"
+
+  stickiness {
+    cookie_duration = "86400"
+    enabled         = "false"
+    type            = "lb_cookie"
+  }
+
+  tags = {
+    Name = "player-token-tracker"
+  }
+
+  tags_all = {
+    Name = "player-token-tracker"
+  }
+
+  target_type = "ip"
+  vpc_id      = var.vpc_id
+}
+
+
+resource "aws_lb_target_group" "tfer--player-file-api" {
+  deregistration_delay = "300"
+
+  health_check {
+    enabled             = "true"
+    healthy_threshold   = "2"
+    interval            = "50"
+    matcher             = "200-299"
+    path                = "/api/lift/snooze/health"
+    port                = "traffic-port"
+    protocol            = "HTTP"
+    timeout             = "20"
+    unhealthy_threshold = "3"
+  }
+
+  ip_address_type               = "ipv4"
+  load_balancing_algorithm_type = "round_robin"
+  name                          = "player-file-api"
+  port                          = "80"
+  protocol                      = "HTTP"
+  protocol_version              = "HTTP1"
+  slow_start                    = "0"
+
+  stickiness {
+    cookie_duration = "86400"
+    enabled         = "false"
+    type            = "lb_cookie"
+  }
+
+  tags = {
+    Name = "player-file-api"
+  }
+
+  tags_all = {
+    Name = "player-file-api"
+  }
+
+  target_type = "ip"
+  vpc_id      = var.vpc_id
+}
+
+
+resource "aws_lb_target_group" "tfer--player-ngrp-proxy" {
+  deregistration_delay = "300"
+
+  health_check {
+    enabled             = "true"
+    healthy_threshold   = "2"
+    interval            = "10"
+    matcher             = "200-299"
+    path                = "/api/lift/snooze/health"
+    port                = "traffic-port"
+    protocol            = "HTTP"
+    timeout             = "5"
+    unhealthy_threshold = "2"
+  }
+
+  ip_address_type               = "ipv4"
+  load_balancing_algorithm_type = "round_robin"
+  name                          = "player-ngrp-proxy"
+  port                          = "80"
+  protocol                      = "HTTP"
+  protocol_version              = "HTTP1"
+  slow_start                    = "0"
+
+  stickiness {
+    cookie_duration = "86400"
+    enabled         = "false"
+    type            = "lb_cookie"
+  }
+
+  tags = {
+    Name = "player-ngrp-proxy"
+  }
+
+  tags_all = {
+    Name = "player-ngrp-proxy"
+  }
+
+  target_type = "ip"
+  vpc_id      = var.vpc_id
+}
+
+resource "aws_lb_target_group" "tfer--PlayerPushRabbitMQ5" {
+  connection_termination = "false"
+  deregistration_delay   = "300"
+
+  health_check {
+    enabled             = "true"
+    healthy_threshold   = "3"
+    interval            = "30"
+    matcher             = "200-399"
+    path                = "/"
+    port                = "443"
+    protocol            = "HTTPS"
+    timeout             = "10"
+    unhealthy_threshold = "3"
+  }
+
+  ip_address_type    = "ipv4"
+  name               = "PlayerPushRabbitMQ5"
+  port               = "5671"
+  preserve_client_ip = "false"
+  protocol           = "TLS"
+  proxy_protocol_v2  = "false"
+
+  stickiness {
+    cookie_duration = "0"
+    enabled         = "false"
+    type            = "source_ip"
+  }
+
+  target_type = "ip"
+  vpc_id      = var.vpc_id
+}
+
+resource "aws_lb_target_group" "tfer--player-push-rabbitmq2" {
+  connection_termination = "false"
+  deregistration_delay   = "300"
+
+  health_check {
+    enabled             = "true"
+    healthy_threshold   = "3"
+    interval            = "30"
+    matcher             = "200-399"
+    path                = "/"
+    port                = "traffic-port"
+    protocol            = "HTTPS"
+    timeout             = "10"
+    unhealthy_threshold = "3"
+  }
+
+  ip_address_type    = "ipv4"
+  name               = "player-push-rabbitmq2"
+  port               = "5671"
+  preserve_client_ip = "false"
+  protocol           = "TLS"
+  proxy_protocol_v2  = "false"
+
+  stickiness {
+    cookie_duration = "0"
+    enabled         = "false"
+    type            = "source_ip"
+  }
+
+  target_type = "ip"
+  vpc_id      = var.vpc_id
 }
