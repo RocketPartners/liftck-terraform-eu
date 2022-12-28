@@ -873,7 +873,7 @@ POLICY
 
 resource "aws_iam_policy" "tfer--cirk-rds-invoke-lambda" {
   description = "Allow RDS to call a lambda function from a db trigger"
-  name        = "cirk-rds-invoke-lambda"
+  name        = "cirkdev-rds-invoke-lambda"
   path        = "/"
 
   policy = <<POLICY

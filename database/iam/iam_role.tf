@@ -1538,7 +1538,7 @@ POLICY
   path                 = "/"
 }
 
-resource "aws_iam_role" "tfer--cirk-rds-role" {
+resource "aws_iam_role" "tfer--cirkdev-rds-role" {
   assume_role_policy = <<POLICY
 {
   "Statement": [
@@ -1558,7 +1558,7 @@ POLICY
   description          = "Allows you to grant RDS access to additional resources on your behalf."
   managed_policy_arns  = ["arn:aws:iam::799611636099:policy/cirk-rds-invoke-lambda"]
   max_session_duration = "3600"
-  name                 = "cirk-rds-role"
+  name                 = "cirkdev-rds-role"
   path                 = "/"
 }
 

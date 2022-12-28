@@ -1,6 +1,6 @@
 resource "aws_rds_cluster" "tfer--cirk-prod" {
   allocated_storage                   = "1"
-  availability_zones                  = ["us-east-1a", "us-east-1b", "us-east-1d"]
+  availability_zones                  = ["${}a", "us-east-1b", "us-east-1d"]
   backtrack_window                    = "0"
   backup_retention_period             = "7"
   cluster_identifier                  = "cirk-prod"
