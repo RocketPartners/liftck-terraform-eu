@@ -18,7 +18,7 @@ resource "aws_rds_cluster" "tfer--cirk-prod" {
   iam_roles                           = [var.iam_rds] #["arn:aws:iam::799611636099:role/cirk-rds-role"]
   #iops                                = "0"
   master_username                     = "cirkadmin"
-  master_password                     = "${var.db_password}"
+  master_password                     = var.db_password
   network_type                        = "IPV4"
   port                                = "3306"
   preferred_backup_window             = "03:21-03:51"
@@ -72,7 +72,7 @@ resource "aws_rds_cluster" "tfer--cirk-services" {
   iam_database_authentication_enabled = "false"
   #iops                                = "0"
   master_username                     = "cirkadmin"
-  master_password                     = "${var.db_password}"
+  master_password                     = var.db_password
   network_type                        = "IPV4"
   port                                = "3306"
   preferred_backup_window             = "03:48-04:18"

@@ -139,5 +139,5 @@ module "rds" {
   sg_rds_services = module.sg.aws_security_group_tfer--cirk-services-rds-sg_sg-019e0d7419c048856_id
   sg_rds = module.sg.aws_security_group_tfer--rds-launch-wizard_sg-0c35a4474b18863d5_id
   region = local.region
-  db_password = var.TF_VAR_DB_PASS
+  db_password = TF_VAR_db_pass
 }

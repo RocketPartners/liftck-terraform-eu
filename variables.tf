@@ -1,3 +1,3 @@
-variable "TF_VAR_DB_PASS" {
+variable "TF_VAR_db_pass" {
   default = ""
 }
