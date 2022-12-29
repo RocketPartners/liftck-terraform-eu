@@ -34,6 +34,6 @@ variable "sg_rds_services" {
   default = ""
 }
 
-variable "master_password" {
+variable "db_password" {
   default = ""
 }

@@ -1,1 +1,4 @@
-variable "TFC_DB_PASS" {}
+variable "TFC_DB_PASS" {
+  type = string
+  default = ""
+}
