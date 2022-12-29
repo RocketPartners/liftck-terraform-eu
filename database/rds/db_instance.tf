@@ -41,7 +41,7 @@ resource "aws_db_instance" "tfer--cirk-prod" {
     workload-type = "other"
   }
   username               = "cirkadmin"
-  password                              = var.master_password
+  password                              = var.db_password
   vpc_security_group_ids = [var.sg_rds]
 }
 
@@ -80,7 +80,7 @@ resource "aws_db_instance" "tfer--cirk-prod-us-east-1a" {
   storage_throughput                    = "0"
   #storage_type                          = "aurora"
   username                              = "cirkadmin"
-  password                              = var.master_password
+  password                              = var.db_password
   vpc_security_group_ids                = [var.sg_rds]
 }
 
@@ -121,7 +121,7 @@ resource "aws_db_instance" "tfer--cirk-services" {
   storage_throughput                    = "0"
   #storage_type                          = "aurora"
   username                              = "cirkadmin"
-  password                              = var.master_password
+  password                              = var.db_password
   vpc_security_group_ids                = [var.sg_rds_services]
 }
 
@@ -162,6 +162,6 @@ resource "aws_db_instance" "tfer--cirk-services-us-east-1a" {
   storage_throughput                    = "0"
   #storage_type                          = "aurora"
   username                              = "cirkadmin"
-  password                              = var.master_password
+  password                              = var.db_password
   vpc_security_group_ids                = [var.sg_rds_services]
 }
