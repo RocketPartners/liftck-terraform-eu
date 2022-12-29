@@ -1,7 +1,39 @@
-data "terraform_remote_state" "subnet" {
-  backend = "local"
+variable "iam_rds" {
+  default = ""
+}
 
-  config = {
-    path = "../../../generated/aws/subnet/terraform.tfstate"
-  }
+variable "iam_rds_monitoring" {
+  default = ""
+}
+
+variable "region" {
+  default = ""
+}
+
+variable "priv_sub_1_id" {
+  default = ""
+}
+
+variable "priv_sub_2_id" {
+  default = ""
+}
+
+variable "pub_sub_1_id" {
+  default = ""
+}
+
+variable "pub_sub_2_id" {
+  default = ""
+}
+
+variable "sg_rds" {
+  default = ""
+}
+
+variable "sg_rds_services" {
+  default = ""
+}
+
+variable "master_password" {
+  default = ""
 }

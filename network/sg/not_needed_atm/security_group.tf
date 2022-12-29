@@ -188,37 +188,6 @@ resource "aws_security_group" "tfer--alb-portal_sg-06d59a5e786ab73fd" {
   vpc_id = "vpc-072a71590b8c6a80c"
 }
 
-resource "aws_security_group" "tfer--cirk-services-rds-sg_sg-019e0d7419c048856" {
-  description = "Created by RDS management console"
-
-  egress {
-    cidr_blocks = ["0.0.0.0/0"]
-    from_port   = "0"
-    protocol    = "-1"
-    self        = "false"
-    to_port     = "0"
-  }
-
-  ingress {
-    cidr_blocks = ["10.2.0.0/16"]
-    description = "VPN Access / ckmarketing"
-    from_port   = "3306"
-    protocol    = "tcp"
-    self        = "false"
-    to_port     = "3306"
-  }
-
-  ingress {
-    cidr_blocks = ["10.20.0.0/16"]
-    from_port   = "3306"
-    protocol    = "tcp"
-    self        = "false"
-    to_port     = "3306"
-  }
-
-  name   = "cirk-services-rds-sg"
-  vpc_id = "vpc-072a71590b8c6a80c"
-}
 
 resource "aws_security_group" "tfer--clear-tunnel-connection-sg_sg-0e7e6c6b32be59230" {
   description = "Security Group for Lambda"
@@ -1205,46 +1174,7 @@ resource "aws_security_group" "tfer--rabbitmq-player-push_sg-08e3a030c8e59bb25" 
   vpc_id = "vpc-072a71590b8c6a80c"
 }
 
-resource "aws_security_group" "tfer--rds-launch-wizard_sg-0c35a4474b18863d5" {
-  description = "Created from the RDS Management Console: 2019/04/16 20:58:06"
 
-  egress {
-    cidr_blocks = ["0.0.0.0/0"]
-    from_port   = "0"
-    protocol    = "-1"
-    self        = "false"
-    to_port     = "0"
-  }
-
-  ingress {
-    cidr_blocks = ["10.2.0.0/16"]
-    description = "VPN Access / ckmarketing"
-    from_port   = "3306"
-    protocol    = "tcp"
-    self        = "false"
-    to_port     = "3306"
-  }
-
-  ingress {
-    cidr_blocks = ["10.20.0.0/16"]
-    from_port   = "3306"
-    protocol    = "tcp"
-    self        = "false"
-    to_port     = "3306"
-  }
-
-  name = "rds-launch-wizard"
-
-  tags = {
-    Name = "cirk-prod-rds-sg"
-  }
-
-  tags_all = {
-    Name = "cirk-prod-rds-sg"
-  }
-
-  vpc_id = "vpc-072a71590b8c6a80c"
-}
 
 resource "aws_security_group" "tfer--redshift-cluster-1-sg_sg-0abf449eb49a6fab9" {
   description = "redshift-cluster-1-sg"

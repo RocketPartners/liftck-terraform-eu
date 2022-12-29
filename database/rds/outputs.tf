@@ -22,13 +22,13 @@ output "aws_db_subnet_group_tfer--default-vpc-072a71590b8c6a80c_id" {
   value = "${aws_db_subnet_group.tfer--default-vpc-072a71590b8c6a80c.id}"
 }
 
-output "aws_db_subnet_group_tfer--default_id" {
+/*output "aws_db_subnet_group_tfer--default_id" {
   value = "${aws_db_subnet_group.tfer--default.id}"
 }
 
 output "aws_rds_cluster_tfer--cirk-prod-david-recover-cluster_id" {
   value = "${aws_rds_cluster.tfer--cirk-prod-david-recover-cluster.id}"
-}
+}*/
 
 output "aws_rds_cluster_tfer--cirk-prod_id" {
   value = "${aws_rds_cluster.tfer--cirk-prod.id}"

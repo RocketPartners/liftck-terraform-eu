@@ -19,6 +19,10 @@ provider "aws" {
     role_arn = "arn:aws:iam::627729951075:role/terraform_bot"
   }
 }
+locals {
+  region = "eu-west-1"
+  account_number = "627729951075"
+}
 
 module "vpc" {
   source = "./network/vpc/"
@@ -36,7 +40,7 @@ module "igw" {
 
 module "eip" {
   source = "./network/eip"
-  region = "eu-west-1"
+  region = local.region
   redshift_eni      = module.eni.aws_network_interface_tfer--eni-025c501cd2d12d572_id
   #elb_eni_1         = module.eni.aws_network_interface_tfer--eni-02bc05185e770a3db_id
   #elb_eni_2         = module.eni.aws_network_interface_tfer--eni-024806e1d471b89ae_id
@@ -101,7 +105,7 @@ module "acm" {
 
 module "alb" {
   source = "./loadbalancer/alb/"
-  region = "eu-west-1"
+  region = local.region
   #elb_eni_1         = module.eni.aws_network_interface_tfer--eni-02bc05185e770a3db_id
   #elb_eni_2         = module.eni.aws_network_interface_tfer--eni-024806e1d471b89ae_id
   eip_nlb_1          = module.eip.aws_eip_tfer--eipalloc-02966e43fa4f9e822_id
@@ -116,4 +120,24 @@ module "alb" {
   vpc_id = module.vpc.aws_vpc_tfer--vpc-072a71590b8c6a80c_id
   circleklift_com_arn = module.acm.aws_acm_certificate_validation_arn
   depends_on = [module.eip]
+}
+
+module "iam" {
+  source = "./database/iam/"
+  region = local.region
+  account_number = local.account_number
+}
+
+module "rds" {
+  source = "./database/rds/"
+  iam_rds = module.iam.aws_iam_role_tfer--cirkdev-rds-role_id
+  iam_rds_monitoring = module.iam.aws_iam_role_tfer--rds-dev-monitoring-role_id
+  pub_sub_1_id  = module.subnet.aws_subnet_tfer--subnet-07d6918830b6abd48_id
+  pub_sub_2_id  = module.subnet.aws_subnet_tfer--subnet-0b79e29e16fd8d71c_id
+  priv_sub_1_id = module.subnet.aws_subnet_tfer--subnet-0f592478c6198fa9e_id
+  priv_sub_2_id = module.subnet.aws_subnet_tfer--subnet-017cb385e5acdbec2_id
+  sg_rds_services = module.sg.aws_security_group_tfer--cirk-services-rds-sg_sg-019e0d7419c048856_id
+  sg_rds = module.sg.aws_security_group_tfer--rds-launch-wizard_sg-0c35a4474b18863d5_id
+  region = local.region
+  master_password = var.TFC_DB_PASS
 }

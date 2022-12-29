@@ -1,13 +1,13 @@
 resource "aws_db_instance" "tfer--cirk-prod" {
   allocated_storage                     = "1"
   auto_minor_version_upgrade            = "true"
-  availability_zone                     = "us-east-1b"
+  availability_zone                     = "${var.region}b"
   backup_retention_period               = "7"
   backup_window                         = "03:21-03:51"
   ca_cert_identifier                    = "rds-ca-2019"
   copy_tags_to_snapshot                 = "false"
   customer_owned_ip_enabled             = "false"
-  db_subnet_group_name                  = "${aws_db_subnet_group.tfer--cirk-prod-subnet-group.name}"
+  db_subnet_group_name                  = aws_db_subnet_group.tfer--cirk-prod-subnet-group.name
   deletion_protection                   = "false"
   enabled_cloudwatch_logs_exports       = ["error"]
   engine                                = "aurora-mysql"
@@ -20,7 +20,7 @@ resource "aws_db_instance" "tfer--cirk-prod" {
   maintenance_window                    = "sun:11:05-sun:11:35"
   max_allocated_storage                 = "0"
   monitoring_interval                   = "60"
-  monitoring_role_arn                   = "arn:aws:iam::799611636099:role/rds-monitoring-role"
+  monitoring_role_arn                   = var.iam_rds_monitoring #"arn:aws:iam::799611636099:role/rds-monitoring-role"
   multi_az                              = "false"
   network_type                          = "IPV4"
   option_group_name                     = "default:aurora-mysql-5-7"
@@ -31,7 +31,7 @@ resource "aws_db_instance" "tfer--cirk-prod" {
   publicly_accessible                   = "false"
   storage_encrypted                     = "false"
   storage_throughput                    = "0"
-  storage_type                          = "aurora"
+  #storage_type                          = "aurora"
 
   tags = {
     workload-type = "other"
@@ -40,34 +40,34 @@ resource "aws_db_instance" "tfer--cirk-prod" {
   tags_all = {
     workload-type = "other"
   }
-
   username               = "cirkadmin"
-  vpc_security_group_ids = ["sg-0c35a4474b18863d5"]
+  password                              = var.master_password
+  vpc_security_group_ids = [var.sg_rds]
 }
 
 resource "aws_db_instance" "tfer--cirk-prod-us-east-1a" {
   allocated_storage                     = "1"
   auto_minor_version_upgrade            = "true"
-  availability_zone                     = "us-east-1a"
+  availability_zone                     = "${var.region}a"
   backup_retention_period               = "7"
   backup_window                         = "03:21-03:51"
   ca_cert_identifier                    = "rds-ca-2019"
   copy_tags_to_snapshot                 = "false"
   customer_owned_ip_enabled             = "false"
-  db_subnet_group_name                  = "${aws_db_subnet_group.tfer--cirk-prod-subnet-group.name}"
+  db_subnet_group_name                  = aws_db_subnet_group.tfer--cirk-prod-subnet-group.name
   deletion_protection                   = "false"
   enabled_cloudwatch_logs_exports       = ["error"]
   engine                                = "aurora-mysql"
   engine_version                        = "5.7.mysql_aurora.2.10.2"
   iam_database_authentication_enabled   = "false"
-  identifier                            = "cirk-prod-us-east-1a"
+  identifier                            = "cirk-prod-${var.region}a"
   instance_class                        = "db.r5.4xlarge"
   iops                                  = "0"
   license_model                         = "general-public-license"
   maintenance_window                    = "sun:11:05-sun:11:35"
   max_allocated_storage                 = "0"
   monitoring_interval                   = "60"
-  monitoring_role_arn                   = "arn:aws:iam::799611636099:role/rds-monitoring-role"
+  monitoring_role_arn                   = var.iam_rds_monitoring #"arn:aws:iam::799611636099:role/rds-monitoring-role"
   multi_az                              = "false"
   network_type                          = "IPV4"
   option_group_name                     = "default:aurora-mysql-5-7"
@@ -78,22 +78,23 @@ resource "aws_db_instance" "tfer--cirk-prod-us-east-1a" {
   publicly_accessible                   = "false"
   storage_encrypted                     = "false"
   storage_throughput                    = "0"
-  storage_type                          = "aurora"
+  #storage_type                          = "aurora"
   username                              = "cirkadmin"
-  vpc_security_group_ids                = ["sg-0c35a4474b18863d5"]
+  password                              = var.master_password
+  vpc_security_group_ids                = [var.sg_rds]
 }
 
 resource "aws_db_instance" "tfer--cirk-services" {
   allocated_storage                     = "1"
   auto_minor_version_upgrade            = "true"
-  availability_zone                     = "us-east-1b"
+  availability_zone                     = "${var.region}b"
   backup_retention_period               = "7"
   backup_window                         = "03:48-04:18"
   ca_cert_identifier                    = "rds-ca-2019"
   copy_tags_to_snapshot                 = "false"
   customer_owned_ip_enabled             = "false"
   db_name                               = "cirk_services"
-  db_subnet_group_name                  = "${aws_db_subnet_group.tfer--cirk-prod-subnet-group.name}"
+  db_subnet_group_name                  = aws_db_subnet_group.tfer--cirk-prod-subnet-group.name
   deletion_protection                   = "false"
   enabled_cloudwatch_logs_exports       = ["error"]
   engine                                = "aurora-mysql"
@@ -106,9 +107,9 @@ resource "aws_db_instance" "tfer--cirk-services" {
   maintenance_window                    = "mon:09:52-mon:10:22"
   max_allocated_storage                 = "0"
   monitoring_interval                   = "60"
-  monitoring_role_arn                   = "arn:aws:iam::799611636099:role/rds-monitoring-role"
+  monitoring_role_arn                   = var.iam_rds_monitoring #"arn:aws:iam::799611636099:role/rds-monitoring-role"
   multi_az                              = "false"
-  name                                  = "cirk_services"
+  #name                                  = "cirk_services"
   network_type                          = "IPV4"
   option_group_name                     = "default:aurora-mysql-5-7"
   parameter_group_name                  = "default.aurora-mysql5.7"
@@ -118,9 +119,10 @@ resource "aws_db_instance" "tfer--cirk-services" {
   publicly_accessible                   = "false"
   storage_encrypted                     = "false"
   storage_throughput                    = "0"
-  storage_type                          = "aurora"
+  #storage_type                          = "aurora"
   username                              = "cirkadmin"
-  vpc_security_group_ids                = ["sg-019e0d7419c048856"]
+  password                              = var.master_password
+  vpc_security_group_ids                = [var.sg_rds_services]
 }
 
 resource "aws_db_instance" "tfer--cirk-services-us-east-1a" {
@@ -133,22 +135,22 @@ resource "aws_db_instance" "tfer--cirk-services-us-east-1a" {
   copy_tags_to_snapshot                 = "false"
   customer_owned_ip_enabled             = "false"
   db_name                               = "cirk_services"
-  db_subnet_group_name                  = "${aws_db_subnet_group.tfer--cirk-prod-subnet-group.name}"
+  db_subnet_group_name                  = aws_db_subnet_group.tfer--cirk-prod-subnet-group.name
   deletion_protection                   = "false"
   enabled_cloudwatch_logs_exports       = ["error"]
   engine                                = "aurora-mysql"
   engine_version                        = "5.7.mysql_aurora.2.10.2"
   iam_database_authentication_enabled   = "false"
-  identifier                            = "cirk-services-us-east-1a"
+  identifier                            = "cirk-services-${var.region}a"
   instance_class                        = "db.r5.xlarge"
   iops                                  = "0"
   license_model                         = "general-public-license"
   maintenance_window                    = "thu:07:43-thu:08:13"
   max_allocated_storage                 = "0"
   monitoring_interval                   = "60"
-  monitoring_role_arn                   = "arn:aws:iam::799611636099:role/rds-monitoring-role"
+  monitoring_role_arn                   = var.iam_rds_monitoring #"arn:aws:iam::799611636099:role/rds-monitoring-role"
   multi_az                              = "false"
-  name                                  = "cirk_services"
+  #name                                  = "cirk_services"
   network_type                          = "IPV4"
   option_group_name                     = "default:aurora-mysql-5-7"
   parameter_group_name                  = "default.aurora-mysql5.7"
@@ -158,7 +160,8 @@ resource "aws_db_instance" "tfer--cirk-services-us-east-1a" {
   publicly_accessible                   = "false"
   storage_encrypted                     = "false"
   storage_throughput                    = "0"
-  storage_type                          = "aurora"
+  #storage_type                          = "aurora"
   username                              = "cirkadmin"
-  vpc_security_group_ids                = ["sg-019e0d7419c048856"]
+  password                              = var.master_password
+  vpc_security_group_ids                = [var.sg_rds_services]
 }

@@ -13,3 +13,11 @@ output "aws_security_group_tfer--alb-portal_sg-06d59a5e786ab73fd_id" {
 output "aws_security_group_tfer--reports-group_sg-00af07a43287c65ba_id" {
   value = "${aws_security_group.tfer--reports-group_sg-00af07a43287c65ba.id}"
 }
+
+output "aws_security_group_tfer--cirk-services-rds-sg_sg-019e0d7419c048856_id" {
+  value = "${aws_security_group.tfer--cirk-services-rds-sg_sg-019e0d7419c048856.id}"
+}
+
+output "aws_security_group_tfer--rds-launch-wizard_sg-0c35a4474b18863d5_id" {
+  value = "${aws_security_group.tfer--rds-launch-wizard_sg-0c35a4474b18863d5.id}"
+}

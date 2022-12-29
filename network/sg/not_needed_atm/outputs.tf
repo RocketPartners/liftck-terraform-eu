@@ -50,9 +50,7 @@ output "aws_security_group_tfer--alb-portal_sg-06d59a5e786ab73fd_id" {
   value = "${aws_security_group.tfer--alb-portal_sg-06d59a5e786ab73fd.id}"
 }
 
-output "aws_security_group_tfer--cirk-services-rds-sg_sg-019e0d7419c048856_id" {
-  value = "${aws_security_group.tfer--cirk-services-rds-sg_sg-019e0d7419c048856.id}"
-}
+
 
 output "aws_security_group_tfer--clear-tunnel-connection-sg_sg-0e7e6c6b32be59230_id" {
   value = "${aws_security_group.tfer--clear-tunnel-connection-sg_sg-0e7e6c6b32be59230.id}"
@@ -192,10 +190,6 @@ output "aws_security_group_tfer--power-bi-reports-prod-sg_sg-0e06cd821e0301498_i
 
 output "aws_security_group_tfer--rabbitmq-player-push_sg-08e3a030c8e59bb25_id" {
   value = "${aws_security_group.tfer--rabbitmq-player-push_sg-08e3a030c8e59bb25.id}"
-}
-
-output "aws_security_group_tfer--rds-launch-wizard_sg-0c35a4474b18863d5_id" {
-  value = "${aws_security_group.tfer--rds-launch-wizard_sg-0c35a4474b18863d5.id}"
 }
 
 output "aws_security_group_tfer--redshift-cluster-1-sg_sg-0abf449eb49a6fab9_id" {
