@@ -1,19 +1,3 @@
-/*
-
-
-
-
-
-
-
-
-
-
-
-
-
-*/
-
 resource "aws_lb_target_group" "tfer--reports-tg" {
   deregistration_delay = "300"
 

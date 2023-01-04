@@ -8,7 +8,7 @@ resource "aws_rds_cluster" "tfer--cirk-prod" {
   copy_tags_to_snapshot               = "true"
   db_cluster_parameter_group_name     = "cirk-prod-cluster-mysql57"
   db_subnet_group_name                = aws_db_subnet_group.tfer--cirk-prod-subnet-group.name
-  deletion_protection                 = "true"
+  deletion_protection                 = false
   enable_http_endpoint                = "false"
   enabled_cloudwatch_logs_exports     = ["error"]
   engine                              = "aurora-mysql"
@@ -25,6 +25,7 @@ resource "aws_rds_cluster" "tfer--cirk-prod" {
   preferred_maintenance_window        = "sun:11:05-sun:11:35"
   storage_encrypted                   = "false"
   vpc_security_group_ids              = [var.sg_rds]
+  skip_final_snapshot = true
 }
 
 /*resource "aws_rds_cluster" "tfer--cirk-prod-david-recover-cluster" {
@@ -63,7 +64,7 @@ resource "aws_rds_cluster" "tfer--cirk-services" {
   database_name                       = "cirk_services"
   db_cluster_parameter_group_name     = "cirk-services-cluster-mysql57"
   db_subnet_group_name                = aws_db_subnet_group.tfer--cirk-prod-subnet-group.name
-  deletion_protection                 = "true"
+  deletion_protection                 = false
   enable_http_endpoint                = "false"
   enabled_cloudwatch_logs_exports     = ["error"]
   engine                              = "aurora-mysql"
@@ -79,4 +80,5 @@ resource "aws_rds_cluster" "tfer--cirk-services" {
   preferred_maintenance_window        = "sun:11:20-sun:11:50"
   storage_encrypted                   = "false"
   vpc_security_group_ids              = [var.sg_rds_services]
+  skip_final_snapshot = true
 }

@@ -122,7 +122,7 @@ module "alb" {
   depends_on = [module.eip]
 }
 
-module "iam" {
+module "rds_iam" {
   source = "./database/iam/"
   region = local.region
   account_number = local.account_number
@@ -130,8 +130,8 @@ module "iam" {
 
 module "rds" {
   source = "./database/rds/"
-  iam_rds = module.iam.aws_iam_role_tfer--cirkdev-rds-role_id
-  iam_rds_monitoring = module.iam.aws_iam_role_tfer--rds-dev-monitoring-role_id
+  iam_rds = module.rds_iam.aws_iam_role_tfer--cirkdev-rds-role_arn
+  iam_rds_monitoring = module.rds_iam.aws_iam_role_tfer--rds-dev-monitoring-role_arn
   pub_sub_1_id  = module.subnet.aws_subnet_tfer--subnet-07d6918830b6abd48_id
   pub_sub_2_id  = module.subnet.aws_subnet_tfer--subnet-0b79e29e16fd8d71c_id
   priv_sub_1_id = module.subnet.aws_subnet_tfer--subnet-0f592478c6198fa9e_id
@@ -140,4 +140,36 @@ module "rds" {
   sg_rds = module.sg.aws_security_group_tfer--rds-launch-wizard_sg-0c35a4474b18863d5_id
   region = local.region
   db_password = var.db_password
+  account_number = local.account_number
+}
+
+
+module "redshift_iam" {
+  source = "./redshift/iam/"
+  account_number = local.account_number
+}
+
+module "redshift_s3" {
+  source = "./redshift/s3/"
+}
+
+module "redshift_sg" {
+  source = "./redshift/sg/"
+  vpc_id = module.vpc.aws_vpc_tfer--vpc-072a71590b8c6a80c_id
+}
+
+module "redshift" {
+  source = "./redshift/redshift/"
+  account_number = local.account_number
+  redshiftCopydev_role = module.redshift_iam.tfer--RedshiftCopydev
+  cross-account-s3-to-redshift_role = module.redshift_iam.tfer--cross-account-s3-to-redshift-role
+  redshiftdev-altria_role = module.redshift_iam.tfer--redshiftdev-altria-role
+  redshiftdev-s3-dump-access_role = module.redshift_iam.tfer--redshiftdev-s3-dump-access
+  redshiftdev-unload-bucket-tobacco_role = module.redshift_iam.tfer--redshiftdev-unload-bucket-tobacco
+  redshiftdev-unload-s3-buckets_role = module.redshift_iam.tfer--redshiftdev-unload-bucket-tobacco
+  pub_sub_1_id = module.subnet.aws_subnet_tfer--subnet-07d6918830b6abd48_id
+  pub_sub_2_id = module.subnet.aws_subnet_tfer--subnet-0b79e29e16fd8d71c_id
+  db_password = var.db_password
+  sg_redshift = module.redshift_sg.tfer--redshiftdev-cluster-1-sg_sg-0abf449eb49a6fab9_id
+  region = local.region
 }

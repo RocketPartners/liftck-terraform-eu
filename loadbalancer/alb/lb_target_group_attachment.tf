@@ -1,4 +1,4 @@
-resource "aws_lb_target_group_attachment" "tfer--arn-003A-aws-003A-elasticloadbalancing-003A-us-east-1-003A-799611636099-003A-targetgroup-002F-PlayerPushRabbitMQ5-002F-7875721d73adfe05-10-002E-0-002E-12-002E-88" {
+/*resource "aws_lb_target_group_attachment" "tfer--arn-003A-aws-003A-elasticloadbalancing-003A-us-east-1-003A-799611636099-003A-targetgroup-002F-PlayerPushRabbitMQ5-002F-7875721d73adfe05-10-002E-0-002E-12-002E-88" {
   target_group_arn = aws_lb_target_group.tfer--PlayerPushRabbitMQ5.arn #"arn:aws:elasticloadbalancing:us-east-1:799611636099:targetgroup/PlayerPushRabbitMQ5/7875721d73adfe05"
   target_id        = "10.0.12.88"
 }
@@ -92,3 +92,4 @@ resource "aws_lb_target_group_attachment" "tfer--arn-003A-aws-003A-elasticloadba
   target_group_arn = aws_lb_target_group.tfer--player-push-rabbitmq3.arn #"arn:aws:elasticloadbalancing:us-east-1:799611636099:targetgroup/player-push-rabbitmq3/c13408f99fa3ac5f"
   target_id        = "10.20.101.220"
 }
+*/

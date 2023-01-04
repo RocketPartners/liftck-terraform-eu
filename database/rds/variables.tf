@@ -37,3 +37,7 @@ variable "sg_rds_services" {
 variable "db_password" {
   default = ""
 }
+
+variable "account_number" {
+  default = ""
+}
