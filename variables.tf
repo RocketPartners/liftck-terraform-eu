@@ -1,3 +1,3 @@
 variable "db_password" {
-  default = "ToTheMoon2023"
+  default = ""
 }
