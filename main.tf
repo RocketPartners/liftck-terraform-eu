@@ -86,7 +86,7 @@ module "nacl" {
 }
 
 module "alb" {
-  source = "./loadbalancer/alb/"
+  source = "./loadbalancer/"
   eip_nlb_1          = module.eip.aws_eip_tfer--eipalloc-02966e43fa4f9e822_id
   eip_nlb_2          = module.eip.aws_eip_tfer--eipalloc-045ef3f84510fb62f_id
   pub_sub_1_id  = module.subnet.aws_subnet_tfer--subnet-07d6918830b6abd48_id
@@ -98,7 +98,7 @@ module "alb" {
 }
 
 module "rds" {
-  source = "./rds/rds/"
+  source = "./rds/"
   pub_sub_1_id  = module.subnet.aws_subnet_tfer--subnet-07d6918830b6abd48_id
   pub_sub_2_id  = module.subnet.aws_subnet_tfer--subnet-0b79e29e16fd8d71c_id
   priv_sub_1_id = module.subnet.aws_subnet_tfer--subnet-0f592478c6198fa9e_id
@@ -107,14 +107,14 @@ module "rds" {
 }
 
 module "redshift" {
-  source = "./redshift/redshift/"
+  source = "./redshift/"
   pub_sub_1_id = module.subnet.aws_subnet_tfer--subnet-07d6918830b6abd48_id
   pub_sub_2_id = module.subnet.aws_subnet_tfer--subnet-0b79e29e16fd8d71c_id
   db_password = var.db_password
 }
 
 module "kinesis" {
-  source = "./kinesis/firehose/"
+  source = "./kinesis/"
   db_password = var.db_password
   redshift_endpoint = module.redshift.redshift_endpoint
   redshift_database_name = module.redshift.redshift_database_name
