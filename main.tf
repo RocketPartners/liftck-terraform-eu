@@ -85,7 +85,7 @@ module "nacl" {
   vpc_id        = module.vpc.aws_vpc_tfer--vpc-072a71590b8c6a80c_id
 }
 
-module "alb" {
+module "loadbalancer" {
   source = "./loadbalancer/"
   eip_nlb_1          = module.eip.aws_eip_tfer--eipalloc-02966e43fa4f9e822_id
   eip_nlb_2          = module.eip.aws_eip_tfer--eipalloc-045ef3f84510fb62f_id
@@ -104,6 +104,7 @@ module "rds" {
   priv_sub_1_id = module.subnet.aws_subnet_tfer--subnet-0f592478c6198fa9e_id
   priv_sub_2_id = module.subnet.aws_subnet_tfer--subnet-017cb385e5acdbec2_id
   db_password = var.db_password
+  vpc_id = module.vpc.aws_vpc_tfer--vpc-072a71590b8c6a80c_id
 }
 
 module "redshift" {
@@ -111,6 +112,7 @@ module "redshift" {
   pub_sub_1_id = module.subnet.aws_subnet_tfer--subnet-07d6918830b6abd48_id
   pub_sub_2_id = module.subnet.aws_subnet_tfer--subnet-0b79e29e16fd8d71c_id
   db_password = var.db_password
+  vpc_id = module.vpc.aws_vpc_tfer--vpc-072a71590b8c6a80c_id
 }
 
 module "kinesis" {

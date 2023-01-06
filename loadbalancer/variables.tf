@@ -39,9 +39,6 @@ variable "vpc_id" {
   default = ""
 }
 
-variable "circleklift_com_arn" {
-  default = ""
-}
 
 variable "eip_nlb_1" {
   default = ""
