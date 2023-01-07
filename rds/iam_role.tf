@@ -19,6 +19,7 @@ POLICY
   max_session_duration = "3600"
   name                 = "rds-dev-monitoring-role"
   path                 = "/"
+
 }
 
 resource "aws_iam_role" "tfer--cirkdev-rds-role" {
@@ -44,3 +45,4 @@ POLICY
   name                 = "cirkdev-rds-role"
   path                 = "/"
 }
+

@@ -14,6 +14,7 @@ resource "aws_rds_cluster_parameter_group" "cirk-prod-cluster-mysql57" {
     value = "31457280"
     apply_method = "immediate"
   }
+
 }
 
 resource "aws_rds_cluster_parameter_group" "cirk-services-cluster-mysql57" {

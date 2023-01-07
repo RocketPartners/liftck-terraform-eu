@@ -97,4 +97,10 @@ resource "aws_rds_cluster" "tfer--cirk-services" {
       availability_zones,
     ]
   }
+
+  resource "time_sleep" "wait_30_seconds" {
+    depends_on = [aws_rds_cluster_parameter_group.cirk-prod-cluster-mysql57, aws_rds_cluster_parameter_group.cirk-services-cluster-mysql57]
+
+    create_duration = "30s"
+  }
 }
