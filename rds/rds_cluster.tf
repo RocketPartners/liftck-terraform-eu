@@ -36,6 +36,7 @@ resource "aws_rds_cluster" "tfer--cirk-prod" {
       availability_zones,
     ]
   }
+  depends_on = [time_sleep.wait_30_seconds]
 }
 
 /*resource "aws_rds_cluster" "tfer--cirk-prod-david-recover-cluster" {
@@ -97,6 +98,7 @@ resource "aws_rds_cluster" "tfer--cirk-services" {
       availability_zones,
     ]
   }
+  depends_on = [time_sleep.wait_30_seconds]
 }
 
 resource "time_sleep" "wait_30_seconds" {
