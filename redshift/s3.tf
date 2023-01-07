@@ -72,7 +72,7 @@ resource "aws_s3_bucket_request_payment_configuration" "tfer--sscsdev-tobacco-cl
 }
 
 resource "aws_s3_bucket" "tfer--ck-altria-files" {
-  bucket        = "ck-altria-files"
+  bucket        = "ckdev-altria-files"
   force_destroy = "false"
   object_lock_enabled = "false"
 }

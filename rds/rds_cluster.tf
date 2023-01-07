@@ -104,5 +104,6 @@ resource "time_sleep" "wait_30_seconds" {
     aws_rds_cluster_parameter_group.cirk-prod-cluster-mysql57,
     aws_rds_cluster_parameter_group.cirk-services-cluster-mysql57
   ]
+
   create_duration = "30s"
 }
