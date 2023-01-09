@@ -7,11 +7,11 @@ Infrastucture for *eu-west-1* is defined as code via **Terraform** (TF). We are 
 
 ## Branching Strategy
 
-For each developer working on infrastructure they must create their own branch '*dev-fulano*'. 
-This ensure that the developer working on infrastructure has the most up-to-date TF. 
-Onced branched off you can create your own 'instance' of the prod environment according to logical components such as 'network', 'RDS', 'Redshift', etc...  
+For each developer working on infrastructure they must create their own branch '*circlek-dev-fulano-region*'. 
+This ensures that the developer working on infrastructure has the most up-to-date TF. 
+Onced branched off you can create your own 'instance' of the prod environment according to services such as 'network', 'rds', 'redshift', etc...  
   
-Having multiple people apply locally edited code to a shared instance becomes messy. Therefore your AWS sub-account for the **circlek-development** account will allow you to spin up your own infrastructure instances and destroy them when you are not actively using it from your own branch. Each developer branch will emulate their local code so that incase the need of destroying something someone left running arrises or simply viewing one another's code for errors when trying to apply appears we can easily attend to either situation. In this arrangement people will not consider a change committed until they have merged it to the **main branch**
+Having multiple people apply locally edited code to a shared environment 'instance' becomes messy. Therefore your AWS sub-account for the **circlek-development** account will allow you to spin up your own infrastructure instances and destroy them when you are not actively using it from your own branch. Each developer branch will emulate their local code so that incase the need of destroying something someone left running arrises or simply viewing one another's code for errors when trying to apply appears we can easily attend to either situation. In this arrangement people will not consider a change committed until they have merged it to the **main branch**
 
 ## Project Layout
 ```
@@ -21,12 +21,6 @@ Having multiple people apply locally edited code to a shared instance becomes me
 │   ├── ...
 │   ├── variables.tf
 │   ├── outputs.tf
-├── ecs
-│   ├── resource.tf...
-│   ├── ...
-├── kinesis
-│   ├── resource.tf...
-│   ├── ...
 ├── loadbalancer
 │   ├── resource.tf...
 │   ├── ...
@@ -36,14 +30,13 @@ Having multiple people apply locally edited code to a shared instance becomes me
 ├── rds
 │   ├── resource.tf...
 │   ├── ...
-├── redshift
-│   ├── resource.tf...
+├── ...
 │   ├── ...
-├── #other components with their respective resources from prod infrastructure
+│   ├── ...
 ├────── main.tf
 └────── variables.tf
 ```
-`main.tf` stands up services by calling them via the module block and the '`resource.tf`' files within each service directory configures each service.
+`main.tf` stands up services by calling them via the module block and the '`resource.tf`' files within each service directory configures each service. `variable.tf` identifies variables within `main.tf` and `resource.tf` configurations. `outputs.tf` identifies values thare are needed to be passed to other services via variables (more about this explained below).
   
 an example of the main.tf:
 ```
@@ -75,7 +68,7 @@ module "rds" {
 The `module "service" {}` block calls the configurations from the service directories via the `source = "..."` parameter.
 Certain configurations for services requires values from other services in order to run successfully. The `module "rds"` block pulls values from the `module "subnet"` block by assigning the rds configuration variables for its service with the needed values from the subnet's service configuration in 'dot notation' form `module."name of module in main.tf"."name of terraform resources in 'resource.tf' in service directory"`. Configuration values that are needed for a services that are identified in another module(service) are placed in the `variables.tf` file. Configuration values identified as needed from that other module(service) are placed in the `outputs.tf` file in that module's(service) directory.
   
-an example of a 'resource.tf' file in a service directory, in this case the `rds_cluster.tf` file:
+An example of a '`resource.tf`' file in a service directory, in this case the `rds_cluster.tf` file under the `rds` service directory:
 ```
 resource "aws_rds_cluster" "tfer--cirk-prod" {
   #allocated_storage                   = "1"
