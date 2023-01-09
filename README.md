@@ -5,6 +5,7 @@ This infrastructure is to be stood-up and running in *eu-west-1*.
 
 Infrastucture for *eu-west-1* is defined as code via **Terraform** (TF). We are currently standing up & testing resources in the **circlek-development** account. Once testing is complete we will start deploying into **cirlcek-production** in region *eu-west-1*.
 
+
 ## Terraform State
 TF stores the current state (what resources are live & the specifications of their configurations) of any infrastructure in a file called `terraform.tfstate` to manage resources deployed via TF.
 
@@ -49,7 +50,7 @@ Terraform v1.3.7
 on darwin_arm64
 ```
 
-Once installed move to the working directory where the .TF file(s) are located and create the mentioned `main.tf` file with required blocks and run
+Once installed move to the working directory where the .TF file(s) are located and create the mentioned `main.tf` file with the required `terraform` an  `provider` blocks and run
 ```
 terraform init
 ```
@@ -76,5 +77,18 @@ If you ever set or change modules or Terraform Settings, run "terraform init"
 again to reinitialize your working directory.
 ```
 
+## Applying code
+Running TF from your local work environment creates problems with shared instances of infrastructure, whether it’s prod or dev. 
+Potentially you can make changes to your local version of TF before applying it. 
+If you run `terraform apply` before pushing the changes to the shared repository, then nobody else has access to that version of the code. 
+This can cause problems if someone else needs to debug the infrastructure.
+If the person who applied their local version of the code does not immediately push their changes, someone else might pull and edit an older version of the code. 
+When they apply that code, they’ll revert the first person’s changes, as TF is declarative. 
+This situation quickly becomes confusing and hard to untangle.
+For this reason **TF should always be applied from the same location:** *main branch*
+
+![Image](https://learning.oreilly.com/api/v2/epubs/urn:orm:book:9781098114664/files/assets/iac2_2003.png)
+
+This ensures that infrastructure is run consistently and is not deviated from current state.
 
 
