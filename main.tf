@@ -128,3 +128,7 @@ module "elasticsearch" {
   priv_sub_1_id = module.subnet.aws_subnet_tfer--subnet-0f592478c6198fa9e_id
   priv_sub_2_id = module.subnet.aws_subnet_tfer--subnet-017cb385e5acdbec2_id
 }
+
+module "ecs" {
+  source = "./ecs/"
+}
