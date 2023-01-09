@@ -13,6 +13,20 @@ Onced branched off you can create your own 'instance' of the prod environment ac
   
 Having multiple people apply locally edited code to a shared instance becomes messy. Therefore your AWS sub-account for the **circlek-development** account will allow you to spin up your own infrastructure instances and destroy them when you are not actively using it from your own branch. Each developer branch will emulate their local code so that incase the need of destroying something someone left running arrises or simply viewing one another's code for errors when trying to apply appears we can easily attend to either situation. In this arrangement people will not consider a change committed until they have merged it to the **main branch**
 
+## Project Layout
+```
+.
+├── elasticsearch
+├── kinesis
+├── loadbalancer
+├── network
+├── rds
+├── redshift
+├── #other components from prod infrastructure
+├────── main.tf
+└────── variables.tf
+```
+
 ## Terraform State
 TF stores the current state (what resources are live & the specifications of their configurations) of any infrastructure in a file called `terraform.tfstate` to manage resources deployed via TF.
 
