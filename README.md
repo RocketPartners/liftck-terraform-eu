@@ -19,6 +19,8 @@ Having multiple people apply locally edited code to a shared instance becomes me
 ├── elasticsearch
 │   ├── resource.tf...
 │   ├── ...
+│   ├── variables.tf
+│   ├── outputs.tf
 ├── ecs
 │   ├── resource.tf...
 │   ├── ...
@@ -37,10 +39,66 @@ Having multiple people apply locally edited code to a shared instance becomes me
 ├── redshift
 │   ├── resource.tf...
 │   ├── ...
-├── #other components from prod infrastructure
+├── #other components with their respective resources from prod infrastructure
 ├────── main.tf
 └────── variables.tf
 ```
+`main.tf` stands up services by calling them via the module block and the '`resource.tf`' files within each service directory configures each service.
+  
+an example of the main.tf:
+```
+terraform {
+  ...
+  ...
+}
+
+provider "aws" {
+  ...
+  ...
+}
+
+module "subnet" {
+  source = "./network/subnet/"
+  ...
+}
+
+module "rds" {
+  source = "./rds/"
+  pub_sub_1_id  = module.subnet.aws_subnet_tfer--subnet-07d6918830b6abd48_id
+  pub_sub_2_id  = module.subnet.aws_subnet_tfer--subnet-0b79e29e16fd8d71c_id
+  priv_sub_1_id = module.subnet.aws_subnet_tfer--subnet-0f592478c6198fa9e_id
+  priv_sub_2_id = module.subnet.aws_subnet_tfer--subnet-017cb385e5acdbec2_id
+  db_password = var.db_password
+  vpc_id = module.vpc.aws_vpc_tfer--vpc-072a71590b8c6a80c_id
+}
+```
+The `module "service" {}` block calls the configurations from the service directories via the `source = "..."` parameter.
+Certain configurations for services requires values from other services in order to run successfully. The `module "rds"` block pulls values from the `module "subnet"` block by assigning the rds configuration variables for its service with the needed values from the subnet's service configuration in 'dot notation' form `module."name of module in main.tf"."name of terraform resources in 'resource.tf' in service directory"`. Configuration values that are needed for a services that are identified in another module(service) are placed in the `variables.tf` file. Configuration values identified as needed from that other module(service) are placed in the `outputs.tf` file in that module's(service) directory.
+  
+an example of a 'resource.tf' file in a service directory, in this case the `rds_cluster.tf` file:
+```
+resource "aws_rds_cluster" "tfer--cirk-prod" {
+  #allocated_storage                   = "1"
+  apply_immediately = true
+  availability_zones                  = ["${data.aws_region.current.name}a", "${data.aws_region.current.name}b",]
+  backtrack_window                    = "0"
+  backup_retention_period             = "7"
+  cluster_identifier                  = "cirk-prod"
+  cluster_members                     = ["cirk-prod", "cirk-prod-${data.aws_region.current.name}a"]
+  copy_tags_to_snapshot               = "true"
+  db_cluster_parameter_group_name     = "cirk-prod-cluster-mysql57"
+  db_subnet_group_name                = aws_db_subnet_group.tfer--cirk-prod-subnet-group.name
+  #deletion_protection                 = false
+  enable_http_endpoint                = "false"
+  enabled_cloudwatch_logs_exports     = ["error"]
+  engine                              = "aurora-mysql"
+  engine_mode                         = "provisioned"
+  engine_version                      = "5.7.mysql_aurora.2.10.2"
+  iam_database_authentication_enabled = "false"
+  iam_roles                           = [aws_iam_role.tfer--cirkdev-rds-role.arn]
+  ...
+ ```
+ the `resource "aws_resource" "terraform_identifier" {}` block stands up a resource within AWS by using the [aws provider](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/rds_cluster) in [Terraform's public registry](https://registry.terraform.io). In previous paragragh you can see 
 
 ## Terraform State
 TF stores the current state (what resources are live & the specifications of their configurations) of any infrastructure in a file called `terraform.tfstate` to manage resources deployed via TF.
