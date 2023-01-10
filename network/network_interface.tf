@@ -8,7 +8,7 @@ resource "aws_network_interface" "tfer--eni-025c501cd2d12d572" {
   #private_ip_list    = ["10.20.100.182"]
   private_ips        = ["10.20.100.182"]
   #private_ips_count  = "0"
-  security_groups    = ["${var.sg_id}"]
+  security_groups    = [var.sg_id]
   source_dest_check  = "true"
   subnet_id          = aws_subnet.tfer--subnet-07d6918830b6abd48.id
 }

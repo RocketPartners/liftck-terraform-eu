@@ -3,6 +3,7 @@ resource "aws_nat_gateway" "tfer--nat-02af312057f1509ee" {
   connectivity_type = "public"
   #private_ip        = "10.20.100.175"
   subnet_id         = aws_subnet.tfer--subnet-07d6918830b6abd48.id
+  depends_on = [aws_internet_gateway.tfer--igw-0123a874ecf046c98]
 }
 
 resource "aws_nat_gateway" "tfer--nat-0d9aebc74e176ff04" {
@@ -10,4 +11,6 @@ resource "aws_nat_gateway" "tfer--nat-0d9aebc74e176ff04" {
   connectivity_type = "public"
   #private_ip        = "10.20.101.20"
   subnet_id         = aws_subnet.tfer--subnet-0b79e29e16fd8d71c.id
+  depends_on = [aws_internet_gateway.tfer--igw-0123a874ecf046c98]
+
 }

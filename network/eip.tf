@@ -14,6 +14,9 @@ resource "aws_eip" "tfer--eipalloc-02966e43fa4f9e822" {
   }
 
   vpc = "true"
+
+  depends_on = [aws_internet_gateway.tfer--igw-0123a874ecf046c98]
+
 }
 
 resource "aws_eip" "tfer--eipalloc-045ef3f84510fb62f" {
@@ -30,11 +33,14 @@ resource "aws_eip" "tfer--eipalloc-045ef3f84510fb62f" {
   }
 
   vpc = "true"
+
+  depends_on = [aws_internet_gateway.tfer--igw-0123a874ecf046c98]
+
 }
 
 resource "aws_eip" "tfer--eipalloc-01ec88f75cdb767fa" {
   network_border_group = data.aws_region.current.name
-  network_interface    = var.redshift_eni #eni-025c501cd2d12d572
+  network_interface    = aws_network_interface.tfer--eni-025c501cd2d12d572.id
   public_ipv4_pool     = "amazon"
 
   tags = {
@@ -46,6 +52,9 @@ resource "aws_eip" "tfer--eipalloc-01ec88f75cdb767fa" {
   }
 
   vpc = "true"
+
+  depends_on = [aws_internet_gateway.tfer--igw-0123a874ecf046c98]
+
 }
 
 /*resource "aws_eip" "tfer--eipalloc-02966e43fa4f9e822" {
@@ -79,7 +88,8 @@ resource "aws_eip" "tfer--eipalloc-03ed668dfe3da3db5" {
 
   vpc = "true"
 
-  depends_on = []
+  depends_on = [aws_internet_gateway.tfer--igw-0123a874ecf046c98]
+
 }
 
 /*resource "aws_eip" "tfer--eipalloc-045ef3f84510fb62f" {
@@ -113,4 +123,7 @@ resource "aws_eip" "tfer--eipalloc-0ec3904e2060e6073" {
   }
 
   vpc = "true"
+
+  depends_on = [aws_internet_gateway.tfer--igw-0123a874ecf046c98]
+
 }
