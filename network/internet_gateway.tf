@@ -7,5 +7,5 @@ resource "aws_internet_gateway" "tfer--igw-0123a874ecf046c98" {
     Name = "cirk"
   }
 
-  vpc_id = var.vpc_id
+  vpc_id = aws_vpc.tfer--vpc-072a71590b8c6a80c.id
 }

@@ -18,7 +18,7 @@ resource "aws_subnet" "tfer--subnet-017cb385e5acdbec2" {
     Name = "cirk Private Subnet (AZ2)"
   }
 
-  vpc_id = var.vpc_id
+  vpc_id = aws_vpc.tfer--vpc-072a71590b8c6a80c.id
 }
 
 resource "aws_subnet" "tfer--subnet-07d6918830b6abd48" {
@@ -40,7 +40,7 @@ resource "aws_subnet" "tfer--subnet-07d6918830b6abd48" {
     Name = "cirk Public Subnet (AZ1)"
   }
 
-  vpc_id = var.vpc_id
+  vpc_id = aws_vpc.tfer--vpc-072a71590b8c6a80c.id
 }
 
 resource "aws_subnet" "tfer--subnet-0b79e29e16fd8d71c" {
@@ -62,7 +62,7 @@ resource "aws_subnet" "tfer--subnet-0b79e29e16fd8d71c" {
     Name = "cirk Public Subnet (AZ2)"
   }
 
-  vpc_id = var.vpc_id
+  vpc_id = aws_vpc.tfer--vpc-072a71590b8c6a80c.id
 }
 resource "aws_subnet" "tfer--subnet-0f592478c6198fa9e" {
   assign_ipv6_address_on_creation                = "false"
@@ -83,5 +83,5 @@ resource "aws_subnet" "tfer--subnet-0f592478c6198fa9e" {
     Name = "cirk Private Subnet (AZ1)"
   }
 
-  vpc_id = var.vpc_id
+  vpc_id = aws_vpc.tfer--vpc-072a71590b8c6a80c.id
 }

@@ -10,7 +10,7 @@ resource "aws_network_interface" "tfer--eni-025c501cd2d12d572" {
   #private_ips_count  = "0"
   security_groups    = ["${var.sg_id}"]
   source_dest_check  = "true"
-  subnet_id          = var.public_subnet_1_id
+  subnet_id          = aws_subnet.tfer--subnet-07d6918830b6abd48.id
 }
 
 /*resource "aws_network_interface" "tfer--eni-02bc05185e770a3db" {
