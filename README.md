@@ -71,25 +71,13 @@ Certain configurations for services requires values from other services in order
 An example of a '`resource.tf`' file in a service directory, in this case the `rds_cluster.tf` file under the `rds` service directory:
 ```
 resource "aws_rds_cluster" "tfer--cirk-prod" {
-  #allocated_storage                   = "1"
-  apply_immediately = true
   availability_zones                  = ["${data.aws_region.current.name}a", "${data.aws_region.current.name}b",]
-  backtrack_window                    = "0"
-  backup_retention_period             = "7"
-  cluster_identifier                  = "cirk-prod"
   cluster_members                     = ["cirk-prod", "cirk-prod-${data.aws_region.current.name}a"]
-  copy_tags_to_snapshot               = "true"
-  db_cluster_parameter_group_name     = "cirk-prod-cluster-mysql57"
   db_subnet_group_name                = aws_db_subnet_group.tfer--cirk-prod-subnet-group.name
-  #deletion_protection                 = false
-  enable_http_endpoint                = "false"
-  enabled_cloudwatch_logs_exports     = ["error"]
-  engine                              = "aurora-mysql"
-  engine_mode                         = "provisioned"
-  engine_version                      = "5.7.mysql_aurora.2.10.2"
-  iam_database_authentication_enabled = "false"
   iam_roles                           = [aws_iam_role.tfer--cirkdev-rds-role.arn]
   ...
+  ...
+}
  ```
  the `resource "aws_resource" "terraform_identifier" {}` block stands up a resource within AWS by using the [aws provider](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/rds_cluster) in [Terraform's public registry](https://registry.terraform.io). In previous paragragh you can see 
 
