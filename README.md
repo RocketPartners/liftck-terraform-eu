@@ -125,6 +125,12 @@ again to reinitialize your working directory.
 ```
   
 !!!You're now ready start building!!!
+  
+## Working with Terraformer
+  
+The DevOps team used [Terraformer](https://github.com/GoogleCloudPlatform/terraformer) to 'reverse engineer' our current *circlek-production* environment into workable and runnable TF files structured by service. 
+Terraformer having taken most of the load off the team, we are now left with formatting and configuring the populated TF   files into reproducable code for any environment. The work for formatting and configuring said TF files is mostly mechanical.
+  
 
 ## Applying code
 Running TF from your local work environment creates problems with shared instances of infrastructure, whether it’s prod or dev. 
