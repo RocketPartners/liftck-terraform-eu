@@ -73,7 +73,7 @@ TF stores the current state (what resources are live & the specifications of the
 We will be storing the TF state file for our infrastructure on Hashicorps' [Terraform Cloud](https://cloud.hashicorp.com/products/terraform) [remote state](https://developer.hashicorp.com/terraform/cloud-docs/workspaces/state).
 
 Each `main.tf` should have the following [terraform block](https://developer.hashicorp.com/terraform/language/settings) and [provider block](https://registry.terraform.io/providers/hashicorp/aws/latest/docs)
-```
+```terraform
 terraform {
   cloud {
     organization = "RocketPartners"
@@ -166,7 +166,7 @@ Terraformer having taken most of the load off the team, we are now left with for
   
 Open the '`resource.tf`' file under the service directory. The following configurations need to be correctly formated/corrected:
   
-```
+```terraform
 #./service_directory_being_formatted/resource.tf
 
 resource "aws_network_resource" "terraform_resource_name" {
@@ -194,7 +194,7 @@ When a resource configuration value can be found in another service directory do
 *  **Identify what resource is being called in the** `terraform_remote_state` **value** (in this case `subnet`and `vpc`)
 *  **If not already in the serivce directory, create a** `variables.tf` **file in the service directory calling the needed value and create a variable that will hold the needed value for the configuration parameter**
 
-```
+```terraform
 #./service_directory_being_formatted/variables.tf
 variable "public_subnet_1" {
   default = ""
@@ -206,7 +206,7 @@ variable "vpc_id" {
 ```
 
 * **If not already in the service directory of the service that has the needed configuration value, create a** `outputs.tf` **file in the service directory that has the needed configuration value.**
-```
+```terraform
 #./service_directory_holding_subnet_value/outputs.tf
 output "public_subnet_1" {
   value = aws_subnet.tfer--subnet-0f592478c6198fa9e.id
@@ -219,7 +219,7 @@ output "vpc_id" {
 ```
   
   * **In the** '`resource.tf`' **file replace the** `terraform_remote_state` **string with the variable created in the** `variables.tf` **file under the same directory**
-```
+```terraform
 #./service_directory_being_formatted/resource.tf
 
 resource "aws_network_resource" "terraform_resource_name" {
@@ -240,7 +240,7 @@ resource "aws_network_resource" "terraform_resource_name" {
 ```
   
 * **Go to your created** `main.tf` **file under the root directory and call the module(service) once you fully configured and formatted the service**
-```
+```terraform
 #./main.tf
 terraform {
   ...
@@ -303,7 +303,42 @@ Apply complete! Resources: 3 to added, 0 to changed, 0 to destroyed.
   
 ### Example 2
   
+Terraformer was created more than 2 years ago. Certain providers and their resources have not been updated so certain configurations are deprecated and must be updated with the new formats/configurations found in the [provider's documentation](https://registry.terraform.io/providers/hashicorp/aws/latest/docs) 
+  in the [Terraform Public Registry](https://registry.terraform.io)
   
+  Depending on your IDE and if you are using a TF plugin (we recommend you do) you will either see:
+  * ~~blocks within the resource block striked out~~ or
+  * a deprecation warning (which will not allow it to run)
+```terraform
+resource "aws_s3_bucket" "tfer--cf-templates-1dwgm5lki7r96-us-east-1" {
+  bucket        = "cf-templates-1dwgm5lki7r96-us-east-1"
+  force_destroy = "false"
+
+  grant {
+    id          = "5c71e10e59db03a96615ff8fdc4de9e08e68719ffb0e5d9043c30725214f880f"
+    permissions = ["FULL_CONTROL"]
+    type        = "CanonicalUser"
+  }
+
+  object_lock_enabled = "false"
+  request_payer       = "BucketOwner"
+
+  server_side_encryption_configuration {
+    rule {
+      apply_server_side_encryption_by_default {
+        sse_algorithm = "AES256"
+      }
+
+      bucket_key_enabled = "false"
+    }
+  }
+
+  versioning {
+    enabled    = "false"
+    mfa_delete = "false"
+  }
+}
+```
 ## Applying code
 Running TF from your local work environment creates problems with shared instances of infrastructure, whether it’s prod or dev. 
 Potentially you can make changes to your local version of TF before applying it. 
