@@ -303,42 +303,50 @@ Apply complete! Resources: 3 to added, 0 to changed, 0 to destroyed.
   
 ### Example 2
   
-Terraformer was created more than 2 years ago. Certain providers and their resources have not been updated so certain configurations are deprecated and must be updated with the new formats/configurations found in the [provider's documentation](https://registry.terraform.io/providers/hashicorp/aws/latest/docs) 
-  in the [Terraform Public Registry](https://registry.terraform.io)
+Terraformer was created more than 2 years ago. Certain providers and their resources have not been updated so certain configurations do not follow the new formats/configurations found in the [provider's documentation](https://registry.terraform.io/providers/hashicorp/aws/latest/docs) in the [Terraform Public Registry](https://registry.terraform.io). 
+We are using AWS version 4.45.0 or greater (configuration found in the `provider "aws" {}` block in `main.tf`) so depending on the resource's configuration it might not run successfully.
   
   Depending on your IDE and if you are using a TF plugin (we recommend you do) you will either see:
-  * ~~blocks within the resource block striked out~~ or
-  * a deprecation warning (which will not allow it to run)
+  * ~~blocks within the resource block striked out due to deprication~~ or
+  * a deprecation warning for configurations within the resource block
 ```terraform
-resource "aws_s3_bucket" "tfer--cf-templates-1dwgm5lki7r96-us-east-1" {
-  bucket        = "cf-templates-1dwgm5lki7r96-us-east-1"
-  force_destroy = "false"
-
-  grant {
-    id          = "5c71e10e59db03a96615ff8fdc4de9e08e68719ffb0e5d9043c30725214f880f"
-    permissions = ["FULL_CONTROL"]
-    type        = "CanonicalUser"
-  }
-
-  object_lock_enabled = "false"
-  request_payer       = "BucketOwner"
-
-  server_side_encryption_configuration {
-    rule {
-      apply_server_side_encryption_by_default {
-        sse_algorithm = "AES256"
-      }
-
-      bucket_key_enabled = "false"
-    }
-  }
-
-  versioning {
-    enabled    = "false"
-    mfa_delete = "false"
-  }
-}
+╷
+│ Warning: Argument is deprecated
+│ 
+│   with aws_resource.terraform_resource_name,
+│   on main.tf line 'x', in resource "aws_resource" "terraform_resource_name":
+│   'x': resource "aws_resource0" "terraform_resource_name" {
+│ 
+│ Use the updated_aws_resource resource instead
+│ 
+│ (and 7 more similar warnings elsewhere)
+╵
 ```
+  If this is the warning you get after running `terraform plan` then it can still run. If you get:
+  ```terraform
+╷
+│ Warning: Depricated attribute
+│ 
+│   on main.tf line 'x', in resource "aws_resource" "terraform_resource_name":
+│   'x': parameter = configuration_value
+│ 
+│ The attribute/parameter/value is deprecated. Refer to the provider documentation for details.
+│ 
+╵
+```
+  after running `terraform plan` then to go to the [AWS provider](https://registry.terraform.io/providers/hashicorp/aws/latest/docs) and search in the documentation according to resource name `aws_resource` (whatver that may be in the TF file under the service directory) and add the required configuration/value/block within the resource block.
+  
+### Example 3
+  Certain configuration values are 'hard coded' in that they are straight from the **circlek-production** account. If we were to run the TF files in another account TF would not be able to run them successfully. We need to 'soft code' these configuration values so that TF can apply them to any account necessary. This requires the developer to analyze the `resource.tf` file configurations within the service directories to ensure that the parameter values are connected specifically to **circlek-production**.
+  * Account number
+  * Region
+  * Canonical ID
+  
+  are the main values associated specifically to **circlek-production**, although there could be others.
+  
+  **When analyzing the** `resource "aws_resource" "terraform_resource_name" {}` **block configurations follow along with the** [AWS provider](https://registry.terraform.io/providers/hashicorp/aws/latest/docs) **in the respective resource section**.
+  
+  
 ## Applying code
 Running TF from your local work environment creates problems with shared instances of infrastructure, whether it’s prod or dev. 
 Potentially you can make changes to your local version of TF before applying it. 
